@@ -1,0 +1,42 @@
+<h1>Html5 Chart page</h1>
+<br>
+<%= link_to "Index Page", root_path(@index)%>
+<br>
+<h1>Shortest possible travel time: <%= @totalTravelTime.min %> pixels</h1>
+<h2> This is achieved through starting with city <%= @totalTravelTime.index(@totalTravelTime.min(2)[1]) %>
+<br>
+<h1>Location of all the Cities</h1>
+
+
+<% @cities.each_with_index do |city, arrayIndex| %>
+  <h2>City <%= arrayIndex %> </h2>
+  locationX: <%= city[0] %><br>
+  locationY: <%= city[1] %> 
+<br><br>
+<% end %>
+<h2>Location of all the Cities but it's a chart</h1>
+  <canvas id="Canvas" width="500" height="500" style="background-color: white;"></canvas>  
+
+  <script>  
+  var canvas = document.getElementById('Canvas');
+  var pointSize = 3
+  //Always check for properties and methods, to make sure your code doesn't break in other browsers.
+  if (canvas.getContext) 
+   {
+    var context = canvas.getContext('2d');
+    context.beginPath();
+    <% counter = 0 %> 
+    context.moveTo(<%=@cities[counter][0]%>, <%=@cities[counter][1]%>);
+    context.fillRect(<%=@cities[counter][0]%>,<%=@cities[counter][1]%>,pointSize,pointSize);
+
+    <% counter = @cities[counter][2][0]%>
+    <% (@loopCounter-1).times do %>
+      context.lineTo(<%=@cities[counter][0]%>,<%=@cities[counter][1]%>);
+      context.fillRect(<%=@cities[counter][0]%>,<%=@cities[counter][1]%>, pointSize,pointSize);
+      <% counter = @cities[counter][2][0]%>
+    <% end %>
+
+
+    context.stroke();
+  }
+  </script> 

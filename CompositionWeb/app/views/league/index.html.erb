@@ -1,0 +1,50 @@
+ <section class="about-section text-center" id="about">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h2 class="text-white mb-4">Prefrences Page</h2>
+                        <p class="text-white-50">This is the prefrences page where you can look at your previously set champion pool. From here you can also navigate to the <a href="/generator/general">General Winrate</a> page and the <a href="/generator/team">Multi Winrate calculator</a>.
+                    </div>
+                </div>
+            </div>
+        </section>
+         <section class="projects-section bg-light" id="projects">
+            <div class="container">
+                <!-- Project One Row-->
+                <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+                	<h1 class="text-black-50">Champion Winrates</h1>
+               	</div>
+               	<% @championDataArray.each_with_index do |champion, arrayIndex| %>
+	                <div class="row border justify-content-center no-gutters mb-5 mb-lg-0 ">
+	                	<div class="col-lg-2" style="display: flex; justify-content: center; align-items: center;"><div class="circle"></div></div>
+	                    <div class="col-lg-3">
+	                        <div class="text-center h-100 project">
+	                            <div class="d-flex h-100">
+	                                <div class="project-text w-100 my-auto text-center text-lg-left" style=" padding-left: 0;">
+	                                    <h4 class="text-black-50"><%= champion[0] %></h4>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="col-lg-3">
+	                        <div class="text-center h-100 project">
+	                            <div class="d-flex h-100">
+	                                <div class="project-text w-100 my-auto text-center text-lg-left" style=" padding-left: 0;">
+	                                    <h4 class="text-black-50">Winrate: <%= champion[1] %>%</h4>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="col-lg-3">
+	                        <div class="text-center h-100 project">
+	                            <div class="d-flex h-100">
+	                                <div class="project-text w-100 my-auto text-center text-lg-left" style=" padding-left: 0;">
+	                                    <h4 class="text-black-50">Pickrate <%= champion[2] %>%</h4>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            <% end %>
+            </div>
+        </section>

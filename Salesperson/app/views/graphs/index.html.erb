@@ -1,0 +1,20 @@
+<h1>Graphs#index</h1>
+<%= link_to "Chart Page", chart_path(@chart)%>
+<p style="color: white ">This is the graph testing page</p>
+
+<h1>Total travel time: <%= @totalTravelTime %></h1>
+<br><br>
+<h1>Location of all the Cities</h1>
+
+
+<% @cities.each_with_index do |city, arrayIndex| %>
+	<h2>City <%= arrayIndex %> </h2>
+	locationX: <%= city[0] %><br>
+	locationY: <%= city[1] %>	
+<br><br>
+<% end %>
+<h1>Location of all the Cities but it's a chart</h1>
+
+<div style="background-color: white">
+	<%= scatter_chart @cities, xtitle: "X", ytitle: "Y", showLine: true, width: "700px", height: "700px", xmax: 1000, max: 1000 %>
+</div>
