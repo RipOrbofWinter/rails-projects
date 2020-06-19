@@ -5,6 +5,10 @@ class Calculator
 		@totalGames = @totalGames.history.count
 	end
 
+	def getTotalGames
+		return @totalGames
+	end
+
 	def to_chN(championId)
         @champion_options.each { |n| 
             if n[0] == championId
@@ -34,33 +38,32 @@ class Calculator
 
 # 	get 1 champion + matchup champions(array)
 	def getMatchup(userChampion, matchupChampions)
-
-		userChampion = to_chI(userChampion)
+		championResults = [0, 0, 0]
+		
+		puts "Searching for matches between #{userChampion} and #{matchupChampions[0]}..."
+		championResults[0] = to_chI(userChampion)
 		matchupChampions[0] = to_chI(matchupChampions[0])
-		matches = 0
-		wins = 0
-		puts "Searching for matches..."
 		matchList = YAML.load(File.read("#{Rails.root}/lib/rubyClasses/MatchHistory.yml"))
 
 
 		matchList.history.each do |i|
 			counter = 0
 			while counter <=5
-				if i.blueTeam[counter] == userChampion
+				if i.blueTeam[counter] == championResults[0]
 					5.times do |i2|
 						if i.redTeam[i2+1] == matchupChampions[0]
-							matches +=1
+							championResults[2] +=1
 							if i.winner == "blue"
-								wins +=1
+								championResults[1] +=1
 							end
 						end
 					end
-				elsif i.redTeam[counter] == userChampion
+				elsif i.redTeam[counter] == championResults[0]
 					5.times do |i2|
 						if i.blueTeam[i2+1] == matchupChampions[0]
-							matches +=1
+							championResults[2] +=1
 							if i.winner == "red"
-								wins +=1
+								championResults[1] +=1
 							end
 						end
 					end
@@ -68,34 +71,8 @@ class Calculator
 				counter +=1
 			end
 		end
-		matches = [matches, winrate(matches, wins)]
-		puts "#{to_chN(userChampion)} has out of #{matches[0]} matches against #{to_chN(matchupChampions[0])}, a winrate of #{matches[1]}%."
-	end
-
-	def getWinsByChampion(championId)
-		matches = 0
-		wins = 0
-		puts "Searching for matches..."
-		matchList = YAML.load(File.read("#{Rails.root}/lib/rubyClasses/MatchHistory.yml"))
-		matchList.history.each do |i|
-			counter = 0
-			while counter <=5
-				if i.blueTeam[counter] == championId
-					matches +=1
-					if i.winner == "blue"
-						wins +=1
-					end
-				elsif i.redTeam[counter] == championId
-					matches +=1
-					if i.winner == "red"
-						wins +=1
-					end
-				end
-				counter +=1
-			end
-		end
-
-		return [matches, wins]
+		championResults[0] = userChampion
+		return championResults
 	end
 
 	def getWinsByAllChampions
@@ -153,10 +130,40 @@ class Calculator
 		return championResults
 	end
 
-	def championWinrate(championName)
-		championId = to_chI(championName)
-		matches = getWinsByChampion(championId)
-		if championId != nil
+	def getWinsByChampion(championId)
+		matches = 0
+		wins = 0
+		puts "Searching for matches..."
+		matchList = YAML.load(File.read("#{Rails.root}/lib/rubyClasses/MatchHistory.yml"))
+		matchList.history.each do |i|
+			counter = 0
+			while counter <=5
+				if i.blueTeam[counter] == championId
+					matches +=1
+					if i.winner == "blue"
+						wins +=1
+					end
+				elsif i.redTeam[counter] == championId
+					matches +=1
+					if i.winner == "red"
+						wins +=1
+					end
+				end
+				counter +=1
+			end
+		end
+
+		return [to_chN(championId), wins, matches]
+	end
+
+	def championWinrate(championNames)
+		matches = Array.new(championNames.length) { [0, 0, 0] }
+		championNames.each_with_index do | champion, index|
+			matches[index][0] = to_chI(champion)
+			matches[index] = getWinsByChampion(matches[index][0])
+		end
+		
+		if matches[0][0] != nil
 			return matches
 		else
 			puts "Unknown championName" 

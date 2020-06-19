@@ -3,8 +3,74 @@
                 <div class="row">
                     <div class="col-lg-8 mx-auto">
                         <h2 class="text-white mb-4">Matchup information Page</h2>
-                        <p class="text-white-50">The League Composition App is a free Composition generator application for the popular game League of legends created using <a href="https://developer.riotgames.com/">the Riot Games API</a>. This app was created as a school project, and you can use it for any purpose, as long as you do not break any rules described in the Riot Games api.</p>
-                    </div>
+                        <p class="text-white-50">This is the matchup information page. Here you can search the database for all champions and set them against one another, based on a total of <%= @gamesPlayed %> games.
+                    </div>                   
                 </div>
+
+				<br><br>
+            </div>
+        </section>
+         <section class="projects-section bg-light" id="projects">
+            <div class="container">
+                <!-- Project One Row-->
+                <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+                	<h1 class="text-black-50">Select Champions</h1>
+               	</div>
+               		<div class="row border justify-content-center no-gutters mb-5 mb-lg-0 ">
+               			<%= form_tag("/generator/team", method: "get") do %>
+		                    <div>
+		                        <div class="text-center h-100 project">
+		                            <div class="d-flex h-100">
+		                                <div class="project-text w-100 my-auto text-center text-lg-left" style=" padding-left: 0;">
+		                                    <h4 class="text-black-50"><%= label_tag 'Your champion: ' %><%= text_field_tag(:q,  @champion1) %></h4>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div>
+		                        <div class="text-center h-100 project">
+		                            <div class="d-flex h-100">
+		                                <div class="project-text w-100 my-auto text-center text-lg-left" style=" padding-left: 0;">
+		                                    <h4 class="text-black-50"><%= label_tag 'Enemy champion: ' %> <%= text_field_tag(:w,  @champion2) %></h4>
+		                                    <%= submit_tag("Submit") %>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+	                    <% end %>
+	                </div>
+				  <br>
+               		<% if @championDataArray.present? %>
+	                <div class="row border justify-content-center no-gutters mb-5 mb-lg-0 ">
+	                	<div class="col-lg-2" style="display: flex; justify-content: center; align-items: center;"><div class="circle"></div></div>
+	                    <div class="col-lg-3">
+	                        <div class="text-center h-100 project">
+	                            <div class="d-flex h-100">
+	                                <div class="project-text w-100 my-auto text-center text-lg-left" style=" padding-left: 0;">
+	                                    <h4 class="text-black-50"><%= @championDataArray[0] %> vs <%= @champion2%></h4>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="col-lg-3">
+	                        <div class="text-center h-100 project">
+	                            <div class="d-flex h-100">
+	                                <div class="project-text w-100 my-auto text-center text-lg-left" style=" padding-left: 0;">
+	                                    <h4 class="text-black-50">Winrate: <%= @championDataArray[1] %>%</h4>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="col-lg-3">
+	                        <div class="text-center h-100 project">
+	                            <div class="d-flex h-100">
+	                                <div class="project-text w-100 my-auto text-center text-lg-left" style=" padding-left: 0;">
+	                                    <h4 class="text-black-50">Occurrences: <%= @championDataArray[2] %>%</h4>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            <% end %>
             </div>
         </section>
