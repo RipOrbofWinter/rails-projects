@@ -4,7 +4,11 @@ class LeagueController < ApplicationController
     championList = ChampionList.new
     calculator = Calculator.new(championList)
     @prefrences = []
+
     @prefrences[0] = current_user.prefrences
+    if @prefrences[0] = ''
+      @prefrences[0] = 'Caitlyn'
+    end
     @prefrences[1] = "Urgot"
     @prefrences[2] = "Darius"
     @championDataArray = calculator.championWinrate(@prefrences)
