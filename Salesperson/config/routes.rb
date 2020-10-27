@@ -1,3 +1,4 @@
+ 
 Rails.application.routes.draw do
 	## Require ruby algoritms/classes
 	require "#{Rails.root}/lib/rubyClasses/Calculator.rb"
