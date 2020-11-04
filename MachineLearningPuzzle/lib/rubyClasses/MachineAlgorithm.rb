@@ -7,8 +7,8 @@ class MachineAlgorithm
 	# => How to represent solutions: Solution is an array of cities (in a order)
 
 	def createSolutions(groupSize, citySize)
-		travelPlan = Array.new(citySize) { |i| [i+1, rand(1..1000) , rand(1..1000), "Not calculated"] }
-		return solutions = Array.new(groupSize) { travelPlan }
+		travelPlan = Array.new(5) { |i| [rand(1..1000), rand(1..1000)] }
+		return solutions = Array.new(groupSize) { Array.new(citySize) { |i| [i+1, travelPlan[i][0], travelPlan[i][1], "Not calculated"] } }
 	end
 
 	def randomizeSolutionsFull(solutions)
