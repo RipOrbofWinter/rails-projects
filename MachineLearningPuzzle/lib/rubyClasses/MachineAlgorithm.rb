@@ -7,7 +7,7 @@ class MachineAlgorithm
 	# => How to represent solutions: Solution is an array of cities (in a order)
 
 	def createSolutions(groupSize, citySize)
-		travelPlan = Array.new(citySize) { |i| [i+1, rand(1..100) , rand(1..100)] }
+		travelPlan = Array.new(citySize) { |i| [i+1, rand(1..1000) , rand(1..1000), "Not calculated"] }
 		return solutions = Array.new(groupSize) { travelPlan }
 	end
 

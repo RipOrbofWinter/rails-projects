@@ -1,17 +1,31 @@
 class DashboardController < ApplicationController
 
   def index
-  	# Classes
+  	## Classes
   	calculator = Calculator.new
   	machineAlgorithm = MachineAlgorithm.new
 
-  	# Cities
+  	## Vars
+  	#cities
   	groupSize = 5
   	citySize = 5
+  	#array
+  	@solutionResults = Array.new(groupSize) { |i| 0 }
+
+  	## Running the methods
+  	# Create city arrays
   	@solutions = machineAlgorithm.createSolutions(groupSize, citySize)
+  	# Randomize the order
+  	@solutions = machineAlgorithm.randomizeSolutionsFull(@solutions)
+  	# Calculate the travel distance between the cities in the new randomized order
+  	@solutions = calculator.calculateTravelDistance(@solutions)
+
+  	# Calculate the solutions total result
+  	@solutionResults = calculator.solutionTravelTime(@solutions, groupSize)
 
   	# Algorithm Time
-  	@solutions = machineAlgorithm.randomizeSolutionsFull(@solutions)
+
+
 
   end
 end
