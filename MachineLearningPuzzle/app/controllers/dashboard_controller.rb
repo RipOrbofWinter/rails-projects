@@ -23,9 +23,17 @@ class DashboardController < ApplicationController
   	# Calculate the solutions total result
   	@solutionResults = calculator.solutionTravelTime(@solutions, groupSize)
 
-  	# Algorithm Time
+  	#Initial
+  	@solutions1 = @solutions
+  	@solutionResults1 = @solutionResults
 
+  	## Algorithm Time
 
+  	@solutions10 = @solutions
+  	@solutionResults10 = @solutionResults
+
+  	@solutions100 = @solutions
+  	@solutionResults100 = @solutionResults
 
   end
 end

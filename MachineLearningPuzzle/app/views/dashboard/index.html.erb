@@ -1,14 +1,40 @@
 <h1>Dashboard Genetic Algorithm</h1>
 
 <h2>Starting Solutions</h2>
-<% @solutions.each_with_index do |solution, arrayIndex| %>
+<% @solutions1.each_with_index do |solution, arrayIndex| %>
 	<h3>Solution <%= arrayIndex+1 %> </h3>
 	<p> Solution: 
-		<% @solutions.each_with_index do |cityId, cityIndex| %>
+		<% @solutions1.each_with_index do |cityId, cityIndex| %>
 			<%= solution[cityIndex][0] %>
 		<% end %>
 	</p>
-	<p> Total Distance: <%= @solutionResults[arrayIndex] %></p>
-	<p> Full Data Set: <%= solution %></p><br>
-<br><br>
+	<p> Total Distance: <%= @solutionResults1[arrayIndex] %></p>
+	<p> Full Data Set: <%= solution %></p>
+<br>
+<% end %>
+
+<h2>After 10 Iterations</h2>
+<% @solutions10.each_with_index do |solution, arrayIndex| %>
+	<h3>Solution <%= arrayIndex+1 %> </h3>
+	<p> Solution: 
+		<% @solutions10.each_with_index do |cityId, cityIndex| %>
+			<%= solution[cityIndex][0] %>
+		<% end %>
+	</p>
+	<p> Total Distance: <%= @solutionResults10[arrayIndex] %></p>
+	<p> Full Data Set: <%= solution %></p>
+<br>
+<% end %>
+
+<h2>After 100 Iterations</h2>
+<% @solutions100.each_with_index do |solution, arrayIndex| %>
+	<h3>Solution <%= arrayIndex+1 %> </h3>
+	<p> Solution: 
+		<% @solutions100.each_with_index do |cityId, cityIndex| %>
+			<%= solution[cityIndex][0] %>
+		<% end %>
+	</p>
+	<p> Total Distance: <%= @solutionResults100[arrayIndex] %></p>
+	<p> Full Data Set: <%= solution %></p>
+<br>
 <% end %>
