@@ -18,4 +18,18 @@ class MachineAlgorithm
 		end
 		return newSolutions
 	end
+
+	def getFittestSolution(solutionResults)
+		bestSolution = solutionResults.index(solutionResults.min)
+		puts "Best Starting solution is: #{bestSolution+1}"
+		return bestSolution
+	end
+
+	def reproduceSolutions
+		
+	end
+
+	def mutatSolution
+		
+	end
 end

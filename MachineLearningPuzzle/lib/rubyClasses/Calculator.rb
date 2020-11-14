@@ -95,8 +95,19 @@ class Calculator
 				solutionResults[arrayIndex] += city[3]
 			end
 			puts "Result for solution #{arrayIndex+1} is: #{solutionResults[arrayIndex]}"
+			puts ""
 
 		end
 		return solutionResults
+	end
+
+	def convertArrayToChart(solutions, bestSolution)
+		hr = []
+		solutions[bestSolution].each do |city|
+  			hr_temp = {:x => city[1], :y => city[2]}
+  			hr.push(hr_temp)
+  		end
+  		hr.push({:x => solutions[bestSolution][0][1], :y => solutions[bestSolution][0][2]})
+		return hr
 	end
 end
