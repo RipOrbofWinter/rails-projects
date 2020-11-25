@@ -51,38 +51,22 @@ class Calculator
 		solutions.each_with_index do | solution, solutionId |
 			puts "Calculating city travel distance for solution: #{solutionId}"
 			solution.each_with_index do | city, arrayIndex |
-				
-
 				if solution.length != arrayIndex+1
 					nextCity = arrayIndex+1
 				else solution.length == arrayIndex
 					nextCity = 0
 				end
-
-
-				puts "Calculating distance for city #{city[0]}: "
-				print city
-				puts ""
-				print nextCity
-				puts ""
-				print solution.length
-				puts ""
-				print solutions[solutionId][nextCity][1]
-				puts ""
-
-
-
 				distanceX = (city[1] - solutions[solutionId][nextCity][1])
 				distanceY = (city[2] - solutions[solutionId][nextCity][2])
 				distanceX = toPositive(distanceX) if isNegative(distanceX) == 1
 				distanceY = toPositive(distanceY) if isNegative(distanceY) == 1
-				puts ""
+				# puts ""
 				city[3] = distanceX + distanceY
-				print city
-				puts ""
-				puts "City #{city[0]} to City #{solutions[solutionId][nextCity][0]} total Distance: #{city[3]}"
-				puts ""
-				puts ""
+				# print city
+				# puts ""
+				# puts "City #{city[0]} to City #{solutions[solutionId][nextCity][0]} total Distance: #{city[3]}"
+				# puts ""
+				# puts ""
 			end
 		end
 		return solutions
@@ -94,8 +78,8 @@ class Calculator
 			solution.each do |city|
 				solutionResults[arrayIndex] += city[3]
 			end
-			puts "Result for solution #{arrayIndex+1} is: #{solutionResults[arrayIndex]}"
-			puts ""
+			# puts "Result for solution #{arrayIndex+1} is: #{solutionResults[arrayIndex]}"
+			# puts ""
 
 		end
 		return solutionResults
