@@ -1,6 +1,7 @@
 class DashboardController < ApplicationController
 
 	### to do
+	# Add graph displaying growth(or lack there of)
 	# add mutation chance
 	# Improve crossover selection?
 
@@ -46,13 +47,17 @@ class DashboardController < ApplicationController
   		puts "Updated Results"
   		p @solutionResults.min(groupSize)
   		puts
+  		@bestSolution10 =  machineAlgorithm.getFittestSolution(@solutionResults)
   	end
 
   	# show solutions after 10 rotations
   	@solutions10 = @solutions
   	@solutionResults10 = @solutionResults
-  	@bestSolution10 =  machineAlgorithm.getFittestSolution(@solutionResults)
+  	
   	@chartDataArray10 = calculator.convertArrayToChart(@solutions, @bestSolution1)
+
+	p machineAlgorithm.bestResultsTracker
+  	@geneticAlgorithmProgressionData = machineAlgorithm.bestResultsTracker
   end
 end
 

@@ -8,6 +8,12 @@ class MachineAlgorithm
 	# It is recommended to have crossover probability above 0.8 and mutation below 0.3 for good convergence.
 	# You may try more crossover points, as 2 or 3, which would give you more variability.
 
+	attr_accessor :bestResultsTracker
+
+	def initialize()
+		@bestResultsTracker = []
+	end
+
 	def createSolutions(groupSize, citySize)
 		travelPlan = Array.new(citySize) { |i| [rand(1..1000), rand(1..1000)] }
 		return solutions = Array.new(groupSize) { Array.new(citySize) { |i| [i+1, travelPlan[i][0], travelPlan[i][1], "Not calculated"] } }
@@ -23,6 +29,7 @@ class MachineAlgorithm
 
 	def getFittestSolution(solutionResults)
 		bestSolution = solutionResults.index(solutionResults.min)
+		@bestResultsTracker.push(solutionResults.min)
 		puts "Best Starting solution is: #{bestSolution}"
 		puts
 		return bestSolution
