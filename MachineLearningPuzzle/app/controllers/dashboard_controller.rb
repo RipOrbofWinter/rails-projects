@@ -14,7 +14,7 @@ class DashboardController < ApplicationController
   	## Vars
   	#cities
   	groupSize = 50
-  	@citySize = 20
+  	@citySize = 8 
   	#array
   	@solutionResults = Array.new(groupSize) { |i| 0 }
 
@@ -36,13 +36,14 @@ class DashboardController < ApplicationController
   	@chartDataArray1 = calculator.convertArrayToChart(@solutions1, @bestSolution1)
   
 
+
+	p @solutionResults.min(groupSize)
+
   	## Algorithm Time
   	# Create new city arrays based on best results from last iteration
-  	10.times do 
-  		@solutions = machineAlgorithm.reproduceSolutions(@solutions, @solutionResults, groupSize)
-  		
-  		# puts "Updated solutions"
-  		# p @solutions
+  	500.times do 
+  		@solutions = machineAlgorithm.reproduceSolutions(@solutions, @solutionResults, groupSize, @citySize)
+  		@solutions = calculator.calculateTravelDistance(@solutions)
   		@solutionResults = calculator.solutionTotalTravelTime(@solutions, groupSize)
   		puts "Updated Results"
   		p @solutionResults.min(groupSize)
@@ -52,11 +53,9 @@ class DashboardController < ApplicationController
 
   	# show solutions after 10 rotations
   	@solutions10 = @solutions
-  	@solutionResults10 = @solutionResults
-  	
+  	@solutionResults10 = @solutionResults 	
   	@chartDataArray10 = calculator.convertArrayToChart(@solutions, @bestSolution1)
-
-	p machineAlgorithm.bestResultsTracker
+  	# Get data for Progression charts
   	@geneticAlgorithmProgressionData = machineAlgorithm.bestResultsTracker
   end
 end

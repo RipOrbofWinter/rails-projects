@@ -53,25 +53,35 @@ class MachineAlgorithm
 	end
 
 
-	def reproduceSolutions(solutions, solutionResults, groupSize)
+	def reproduceSolutions(solutions, solutionResults, groupSize, citySize)
 	# 1. select good solution results
 		bestSolution = solutionResults.index(solutionResults.min)
 		secondBestSolution = getSecondBestSolution(solutions, solutionResults, groupSize)
 
 		bestSolutions = [bestSolution, secondBestSolution]
+		puts "Selected best solution indexes#{bestSolutions}, values: #{solutions[bestSolutions[0]]}"
+
 	# 2. select part of each to transplant
 		newSolutions = []
 		puts "Start of transplanting"		
 		groupSize.times do
 		 # 2.1. crossover chance
-			if rand(100) <= 85
-				solutionMinTransplant = ((groupSize.to_f)/100*20).to_i
-				solutionHalfTransplant = ((groupSize.to_f)/2).to_i
-				solutionMaxTransplant = ((groupSize.to_f)/100*80).to_i
+			if rand(0..100) <= 100
+					# solutionMinTransplant = ((citySize.to_f)/100*20).to_i
+					# solutionHalfTransplant = ((citySize.to_f)/2).to_i
+					# solutionMaxTransplant = ((citySize.to_f)/100*80).to_i
 
-				newSolution = Array.new(groupSize)
-				tempRandom = [rand(solutionMinTransplant-1...solutionHalfTransplant-1)]
-				tempRandom.push(rand(solutionHalfTransplant+1..solutionMaxTransplant))
+				newSolution = Array.new(citySize)
+				# set new random seed
+				srand
+				# Select minimum size for transplant
+					# tempRandom = [rand(solutionMinTransplant-1...solutionHalfTransplant-1)]
+				# # Select maximum size for transplant
+					# tempRandom.push(rand(solutionHalfTransplant+1..solutionMaxTransplant))
+				# Transplant selected area into new array
+				tempRandom = [0,0]
+				tempRandom[0] = rand(0..citySize-1)
+				tempRandom[1] =rand(tempRandom[0]..citySize)
 				newSolution.insert(tempRandom[0], solutions[bestSolutions[0]][tempRandom[0]..tempRandom[1]])
 				newSolution = newSolution.flatten(1)
 				# 3. fill in remaining spots with unused cities, looping through the solution till all spots are filled.
@@ -93,7 +103,11 @@ class MachineAlgorithm
 				newSolution.compact!
 				newSolutions.push(newSolution)
 			else
-				newSolutions.push(solutions[bestSolutions[0]])
+				if rand(1..2) == 1
+					newSolutions.push(solutions[bestSolutions[0]])
+				else
+					newSolutions.push(solutions[bestSolutions[1]])
+				end
 			end
 		end
 	# 4 mutatation chance

@@ -48,25 +48,26 @@ class Calculator
 	end
 
 	def calculateTravelDistance(solutions)
+		p "Calculating city travel time"
 		solutions.each_with_index do | solution, solutionId |
-			puts "Calculating city travel distance for solution: #{solutionId}"
+			# puts "Calculating city travel distance for solution: #{solutionId}"
 			solution.each_with_index do | city, arrayIndex |
 				if solution.length != arrayIndex+1
 					nextCity = arrayIndex+1
-				else solution.length == arrayIndex
+					# arrayIndex should be +1 aswell on else
+				else solution.length == arrayIndex+1
 					nextCity = 0
 				end
-				distanceX = (city[1] - solutions[solutionId][nextCity][1])
-				distanceY = (city[2] - solutions[solutionId][nextCity][2])
-				distanceX = toPositive(distanceX) if isNegative(distanceX) == 1
-				distanceY = toPositive(distanceY) if isNegative(distanceY) == 1
+				# distanceX = (city[1] - solutions[solutionId][nextCity][1])
+				# distanceY = (city[2] - solutions[solutionId][nextCity][2])
 				# puts ""
-				city[3] = distanceX + distanceY
+				city[3] = Integer.sqrt((city[1]-solutions[solutionId][nextCity][1])**2 + (city[2]-solutions[solutionId][nextCity][2])**2)
 				# print city
 				# puts ""
 				# puts "City #{city[0]} to City #{solutions[solutionId][nextCity][0]} total Distance: #{city[3]}"
 				# puts ""
 				# puts ""
+
 			end
 		end
 		return solutions
