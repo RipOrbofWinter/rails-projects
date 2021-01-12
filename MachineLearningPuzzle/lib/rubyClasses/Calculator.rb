@@ -87,12 +87,21 @@ class Calculator
 	end
 
 	def convertArrayToChart(solutions, bestSolution)
+		hr = createChartArray(solutions[bestSolution])
+
+
+		return hr
+	end
+
+	def createChartArray(solution)
+				puts "Look here for testing"
+		p solution
 		hr = []
-		solutions[bestSolution].each do |city|
+		solution.each do |city|
   			hr_temp = {:x => city[1], :y => city[2]}
   			hr.push(hr_temp)
   		end
-  		hr.push({:x => solutions[bestSolution][0][1], :y => solutions[bestSolution][0][2]})
+  		hr.push({:x => solution[0][1], :y => solution[0][2]})
 		return hr
 	end
 end

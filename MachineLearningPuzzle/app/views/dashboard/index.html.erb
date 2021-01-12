@@ -1,16 +1,21 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 <h1>Dashboard Genetic Algorithm</h1>
-<h2>Chart showing the best initial solution. <span style="padding-left:280px">Chart showing the progression of the Genetic Algorithm</h2>
-<h3><%= "Current Best solution: #{@bestSolution1+1} with #{@solutionResults1[@bestSolution1]}" %></h3>
+<!-- Graphs -->
+<h2>Chart showing the best initial solution. <span style="padding-left:280px">Chart showing the best solution after 10 iterations</h2>
+<h3><%= "Current Best solution: #{@bestSolution1+1} with #{@solutionResults1[@bestSolution1]}" %><span style="padding-left:400px"><%= "Best found solution is from iteration: #{@progressionDataFittest[1]+1} with #{@progressionDataFittest[0]}" %></h3>
 <div style="position:relative; margin-bottom: 650px">
    <canvas id="myChart" width="600" height="600" style="position:absolute; left: 0px;"></canvas>
-   <canvas id="bestOfChart" width="800" height="1000" style="position:absolute; left: 620px;"></canvas>
+   <canvas id="myChart10" width="600" height="600" style="position:absolute; left: 620px;"></canvas>
+
 </div>
 <br>
 
-<h2>Chart showing the best solution after 10 iterations</h2>
-<h3><%= "Current Best solution: #{@bestSolution10+1} with #{@solutionResults10[@bestSolution10]}" %></h3>
-<canvas id="myChart10" width="600" height="600" ></canvas>
+<h2>Chart showing the progression of the Genetic Algorithm</h2>
+<h3><%= "Best found solution is from iteration: #{@progressionDataFittest[1]+1} with #{@progressionDataFittest[0]}" %></h3>
+   <canvas id="bestOfChart" width="1800" height="750"></canvas>
+
+<!-- Test/debug data -->
+
 <h2>Starting Solutions</h2>
 <% @solutions1.each_with_index do |solution, arrayIndex| %>
 	<h3>Solution <%= arrayIndex+1 %> </h3>
@@ -34,6 +39,7 @@
 	<p> Total Distance: <%= @solutionResults10[arrayIndex] %></p>
 <% end %>
 
+<!-- js graph code -->
 <script>
 
 var ctx = document.getElementById('myChart').getContext('2d');
@@ -87,10 +93,9 @@ var ctx = document.getElementById('bestOfChart').getContext('2d');
 var chart = new Chart(ctx, {
    type: 'line',
    data: {
-      labels: <%= Array.new(@geneticAlgorithmProgressionData.length) { |i| i}%>,
+      labels: <%= Array.new(@progressionData.length) { |i| i}%>,
       datasets: [{
-         data: <%= @geneticAlgorithmProgressionData.to_json.html_safe %>,
-         // data: [10000, 2000],
+         data: <%= @progressionData.to_json.html_safe %>,
          borderColor: 'black',
          borderWidth: 1,
          pointBackgroundColor: '#000',

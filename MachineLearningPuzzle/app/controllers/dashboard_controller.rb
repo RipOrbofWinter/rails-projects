@@ -1,9 +1,8 @@
 class DashboardController < ApplicationController
 
 	### to do
-	# Add graph displaying growth(or lack there of)
 	# add mutation chance
-	# Improve crossover selection?
+	# Improve crossover selection
 
 
   def index
@@ -32,7 +31,7 @@ class DashboardController < ApplicationController
   	## Publish Initial findings to view
   	@solutions1 = @solutions
   	@solutionResults1 = @solutionResults
-  	@bestSolution1 =  machineAlgorithm.getFittestSolution(@solutionResults)
+  	@bestSolution1 =  machineAlgorithm.getFittestSolution(@solutions, @solutionResults)
   	@chartDataArray1 = calculator.convertArrayToChart(@solutions1, @bestSolution1)
   
 
@@ -48,15 +47,17 @@ class DashboardController < ApplicationController
   		puts "Updated Results"
   		p @solutionResults.min(groupSize)
   		puts
-  		@bestSolution10 =  machineAlgorithm.getFittestSolution(@solutionResults)
+  		@bestSolution10 =  machineAlgorithm.getFittestSolution(@solutions, @solutionResults)
   	end
 
-  	# show solutions after 10 rotations
+  	# show solutions after rotations
   	@solutions10 = @solutions
   	@solutionResults10 = @solutionResults 	
-  	@chartDataArray10 = calculator.convertArrayToChart(@solutions, @bestSolution1)
+  	@chartDataArray10 = calculator.createChartArray(machineAlgorithm.bestResultsOrderTracker)
   	# Get data for Progression charts
-  	@geneticAlgorithmProgressionData = machineAlgorithm.bestResultsTracker
+  	p machineAlgorithm.bestResultsIndexTracker
+  	@progressionData = machineAlgorithm.bestResultsIndexTracker
+  	@progressionDataFittest = [machineAlgorithm.bestResultsIndexTracker.min, machineAlgorithm.bestResultsIndexTracker.index(machineAlgorithm.bestResultsIndexTracker.min)]
   end
 end
 
