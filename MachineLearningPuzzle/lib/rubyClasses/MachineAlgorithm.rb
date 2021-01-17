@@ -11,17 +11,17 @@ class MachineAlgorithm
 	attr_accessor :bestResultsIndexTracker, :bestResultsOrderTracker
 
 	def initialize()
-		@bestResultsIndexTracker = []
-		@bestResultOrderTracker = []
+		@bestResultsIndexTracker = [Float::INFINITY]
+		@bestResultsOrderTracker = []
 	end
 
-	def createSolutions(groupSize, citySize)
-		travelPlan = Array.new(citySize) { |i| [rand(1..1000), rand(1..1000)] }
-		return solutions = Array.new(groupSize) { Array.new(citySize) { |i| [i+1, travelPlan[i][0], travelPlan[i][1], "Not calculated"] } }
+	def createSolutions(solutionCount, cityCount)
+		travelPlan = Array.new(cityCount) { |i| [rand(1..1000), rand(1..1000)] }
+		return solutions = Array.new(solutionCount) { Array.new(cityCount) { |i| [i+1, travelPlan[i][0], travelPlan[i][1], "Not calculated"] } }
 	end
 
-	def randomizeSolutionsFull(solutions, groupSize, citySize)
-		newSolutions = createSolutions(groupSize, citySize)
+	def randomizeSolutionsFull(solutions, solutionCount, cityCount)
+		newSolutions = createSolutions(solutionCount, cityCount)
 		solutions.each_with_index do |solution, arrayIndex|
 			newSolutions[arrayIndex] = solution.shuffle
 		end
@@ -30,22 +30,22 @@ class MachineAlgorithm
 
 	def getFittestSolution(solutions, solutionResults)
 		bestSolution = solutionResults.index(solutionResults.min)
-		@bestResultsIndexTracker.push(solutionResults.min)
-		if @bestResultsIndexTracker.last <= @bestResultsIndexTracker.min 
+		if solutionResults.min < @bestResultsIndexTracker.min 
+			p "New Best Found: #{solutionResults.min}"
 			@bestResultsOrderTracker = solutions[bestSolution]
 		end
-		puts "Best Starting solution is: #{bestSolution}"
-		puts
+		@bestResultsIndexTracker.push(solutionResults.min)
 		return bestSolution
 	end
 
-	def getSecondBestSolution(solutions, solutionResults, groupSize)
+	def getSecondBestSolution(solutions, solutionResults, solutionCount)
 		x = 1
+		rand(1..10)
 		loop do
-			if solutionResults.min(groupSize)[x] != solutionResults.min
-				secondBestSolution = solutionResults.index(solutionResults.min(groupSize)[x])
+			if solutionResults.min(solutionCount)[x] != solutionResults.min
+				secondBestSolution = solutionResults.index(solutionResults.min(solutionCount)[x])
 				return secondBestSolution
-			elsif x >= groupSize-1
+			elsif x >= solutionCount-1
 				break
 			else
 				# print "The #{index} best solution is equal to the first, skipping... "
@@ -57,10 +57,10 @@ class MachineAlgorithm
 	end
 
 
-	def reproduceSolutions(solutions, solutionResults, groupSize, citySize)
-	# 1. select good solution results
+	def reproduceSolutions(solutions, solutionResults, solutionCount, cityCount)
+	# 1. select top2 results
 		bestSolution = solutionResults.index(solutionResults.min)
-		secondBestSolution = getSecondBestSolution(solutions, solutionResults, groupSize)
+		secondBestSolution = getSecondBestSolution(solutions, solutionResults, solutionCount)
 
 		bestSolutions = [bestSolution, secondBestSolution]
 		puts "Selected best solution indexes#{bestSolutions}, values: #{solutions[bestSolutions[0]]}"
@@ -68,25 +68,14 @@ class MachineAlgorithm
 	# 2. select part of each to transplant
 		newSolutions = []
 		puts "Start of transplanting"		
-		groupSize.times do
+		solutionCount.times do
 		 # 2.1. crossover chance
 			if rand(0..100) <= 100
-					# solutionMinTransplant = ((citySize.to_f)/100*20).to_i
-					# solutionHalfTransplant = ((citySize.to_f)/2).to_i
-					# solutionMaxTransplant = ((citySize.to_f)/100*80).to_i
-
-				newSolution = Array.new(citySize)
-				# set new random seed
-				srand
-				# Select minimum size for transplant
-					# tempRandom = [rand(solutionMinTransplant-1...solutionHalfTransplant-1)]
-				# # Select maximum size for transplant
-					# tempRandom.push(rand(solutionHalfTransplant+1..solutionMaxTransplant))
-				# Transplant selected area into new array
-				tempRandom = [0,0]
-				tempRandom[0] = rand(0..citySize-1)
-				tempRandom[1] =rand(tempRandom[0]..citySize)
-				newSolution.insert(tempRandom[0], solutions[bestSolutions[0]][tempRandom[0]..tempRandom[1]])
+				newSolution = Array.new(cityCount)
+				swathRange = [0,0]
+				swathRange[0] = rand(0..cityCount-1)
+				swathRange[1] =rand(swathRange[0]..cityCount)
+				newSolution.insert(swathRange[0], solutions[bestSolutions[0]][swathRange[0]..swathRange[1]])
 				newSolution = newSolution.flatten(1)
 				# 3. fill in remaining spots with unused cities, looping through the solution till all spots are filled.
 				solutions[bestSolutions[1]].each_with_index do |city, cityIndex|
@@ -97,10 +86,10 @@ class MachineAlgorithm
 						end
 					end
 					if tempCityCount.include?(city[0]) == false
-						if cityIndex >= tempRandom[0]
-							newSolution.insert(tempRandom[0]-1, city)
+						if cityIndex >= swathRange[0]
+							newSolution.insert(swathRange[0]-1, city)
 						else
-							newSolution.insert(tempRandom[0]+tempRandom[1]+1, city)
+							newSolution.insert(swathRange[0]+swathRange[1]+1, city)
 						end
 					end
 				end
@@ -119,6 +108,80 @@ class MachineAlgorithm
 	# 5. Return to controller
 		puts "End of transplanting"	
 		return newSolutions
+	end
+
+	def reproduceSolutionsAlt(solutions, solutionResults, solutionCount, cityCount)
+		## 'Order 1 Crossover' with crossover guide, math still by me.
+		# 1. select top2 results
+		bestSolution = solutionResults.index(solutionResults.min)
+		secondBestSolution = getSecondBestSolution(solutions, solutionResults, solutionCount)
+
+		bestSolutions = [bestSolution, secondBestSolution]
+		# puts "Selected best solution indexes#{bestSolutions}, values: #{solutions[bestSolutions[0]]}"
+
+		# 2. select part of each to transplant
+		newSolutions = [Array.new(cityCount)]
+		# newSolutions = [Array.new(cityCount), Array.new(cityCount)]
+		# formula for getting a swath range that is not stuck around the center!
+		# currently is always equal to 50% of total city size, can be improved later!
+		swath = rand(cityCount)
+		if swath > cityCount/2
+			swath-=cityCount
+		end
+		swath-=1
+		swathRange = swath..swath+cityCount/2-1
+		# If it breaks this is why
+		swathEndRange = swath+cityCount/2..swath+cityCount-1
+
+		swathRange.each do	|i|
+			newSolutions[0].delete_at(i)
+			newSolutions[0].insert(i, solutions[bestSolutions[0]][i])
+			puts solutions[bestSolutions[0]][i][0]
+		end
+		# 3. fill in remaining spots with unused cities, looping through the solution till all spots are filled.
+
+
+		swathEndRange.each do	|i|
+			tempCityCount = []
+			tempCounter = 0
+			if i >= cityCount
+				i = i-cityCount
+			end
+			newSolutions[0].delete_at(i)
+			newSolutions[0].each do |tempCity|
+				if tempCity != nil
+					tempCityCount.push(tempCity[0])
+				end
+			end
+			# slower but more accurate, maybe look for diffrent solution later
+			cityCount.times do
+				if tempCounter+i >=cityCount
+					tempCounter-=cityCount
+				end
+				if tempCityCount.include?(solutions[bestSolutions[1]][i+tempCounter][0])
+					tempCounter+=1						
+				end
+			end
+			puts solutions[bestSolutions[1]][i+tempCounter][0]
+			newSolutions[0].insert(i, solutions[bestSolutions[1]][i+tempCounter])
+		end
+
+		# 3.2 remove 2 worst results from last gen
+		maxSolutionCounter = 0
+		1.times do
+			solutions.delete_at(solutionResults.index(solutionResults.max(2)[maxSolutionCounter]))
+			maxSolutionCounter +=1
+		end
+		# 3.3 place new solutions into generation
+		newSolutions.each do |newSolution|
+			solutions.push(newSolution)
+		end
+
+		# 4 mutatation chance
+		solutions = mutateSolution(solutions)
+		# 5. Return to controller
+		puts "End of transplanting"	
+		return solutions
 	end
 
 	def mutateSolution(solutions)

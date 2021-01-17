@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 	resources :dashboard
 
 	##Set routes
-	root 'dashboard#index'
-
+	root 	'dashboard#index'
+	get 	'/alt' => 'dashboard#altSolution'
 	# get '/chart', to: "graphs#chart"
 end
