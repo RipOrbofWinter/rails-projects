@@ -98,7 +98,7 @@ class DashboardController < ApplicationController
 
   	## Algorithm Time
   	# Create new city arrays based on best results from last iteration
-  	50.times do 
+  	200.times do 
   		@solutions = machineAlgorithm.reproduceSolutionsAlt(@solutions, @solutionResults, solutionCount, @cityCount)
   		@solutions = calculator.calculateTravelDistance(@solutions)
   		@solutionResults = calculator.solutionTotalTravelTime(@solutions, solutionCount)
